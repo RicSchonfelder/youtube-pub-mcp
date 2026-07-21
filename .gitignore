@@ -1,0 +1,34 @@
+# YouTube / Google Auth
+*.json
+_service_account.json
+token*.json
+token.json
+client_secret*.json
+credentials*.json
+oauth*.json
+*secret*.json
+
+# Cache e artefatos locais
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+.pytest_cache/
+.venv/
+.env
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Segredos gerais
+.secrets
+*.pem
+*.key
