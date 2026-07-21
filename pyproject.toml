@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "youtube-pub-mcp"
+version = "0.1.0"
+description = "MCP server for YouTube publishing with multi-channel support and JSON scheduling"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = ["youtube", "mcp", "publishing", "scheduler", "video", "upload"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+authors = [
+    { name = "Ricardo Schönfelder", email = "ricardo@example.com" },
+]
+maintainers = [
+    { name = "Ricardo Schönfelder", email = "ricardo@example.com" },
+]
+dependencies = [
+    "google-auth>=2.0.0",
+    "google-auth-oauthlib>=1.0.0",
+    "google-auth-httplib2>=0.1.0",
+    "google-api-python-client>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/ricschonfelder/youtube-pub-mcp"
+Repository = "https://github.com/ricschonfelder/youtube-pub-mcp"
+Issues = "https://github.com/ricschonfelder/youtube-pub-mcp/issues"
+
+[project.scripts]
+youtube-pub-mcp = "youtube_pub_mcp.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/youtube_pub_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/docs", "README.md", "LICENSE", "CHANGELOG.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+strict = true
+pretty = true
+show_error_codes = true
+ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["E501"]
