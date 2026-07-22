@@ -157,22 +157,25 @@ def _quota_limit(data: dict[str, Any]) -> int:
         return 15
 
 
-def _quota_window_start(data: dict[str, Any]) -> datetime | None:
+def _quota_window_start(data: dict[str, Any], *, now: datetime | None = None) -> datetime | None:
     quota = data.get("quota", {})
     window_start = quota.get("window_start")
     if not window_start:
         return None
     try:
-        today = datetime.now(timezone.utc).date()
+        now = now or datetime.now(timezone.utc)
+        today = now.date()
         t = datetime.strptime(window_start, "%H:%M").time()
-        return datetime.combine(today, t, tzinfo=timezone.utc)
+        candidate = datetime.combine(today, t, tzinfo=timezone.utc)
+        if candidate > now:
+            candidate -= timedelta(days=1)
+        return candidate
     except (TypeError, ValueError):
         return None
 
 
 def _is_within_window(job: dict[str, Any], now: datetime, data: dict[str, Any]) -> bool:
-    # If schedule does not constrain jobs, they are always within window.
-    window_start = _quota_window_start(data)
+    window_start = _quota_window_start(data, now=now)
     if window_start is None:
         return True
     return now >= window_start
